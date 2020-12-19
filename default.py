@@ -1,16 +1,19 @@
 ﻿from discord.ext import commands
 import configparser
+import os
 import discord
 class DefaultCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        read_config = configparser.ConfigParser()
-        read_config.read("./config/config.ini")
-        self.LogID = read_config.get("config", "LogChannel")
+        # read_config = configparser.ConfigParser()
+        # read_config.read("./config/config.ini")
+        # self.LogID = read_config.get("config", "LogChannel")
+        self.LogID = os.getenv("LOG_ID")
+                
     @commands.Cog.listener()
     async def on_command(self,ctx):
         # you'll need this because you're also using cmd decorators
-        channel = self.bot.get_channel(int(self.LogID))
+        # channel = self.bot.get_channel(int(self.LogID))
         await channel.send(f'{ctx.message.author} run `{ctx.message.content}` in channel `{ctx.message.channel}` in server `{ctx.message.guild}`')
     @commands.Cog.listener()
     async def on_ready(self):
